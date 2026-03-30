@@ -8,6 +8,7 @@ export AMBULANCE_API_ENVIRONMENT="Development"
 export AMBULANCE_API_PORT="8080"
 export AMBULANCE_API_MONGODB_USERNAME="root"
 export AMBULANCE_API_MONGODB_PASSWORD="neUhaDnes"
+export DOCKER_HUB_ID="meowiky002"
 
 mongo() {
     docker compose --file "${PROJECT_ROOT}/deployments/docker-compose/compose.yaml" "$@"
@@ -37,6 +38,12 @@ case "$COMMAND" in
         ;;
     mongo)
         mongo up
+        ;;
+    docker)
+        (
+            cd "${PROJECT_ROOT}" || exit 1
+            docker build -t "${DOCKER_HUB_ID}/ambulance-wl-webapi:local-build" -f "${PROJECT_ROOT}/build/docker/Dockerfile" .
+        )
         ;;
     *)
         echo "Unknown command: $COMMAND" >&2

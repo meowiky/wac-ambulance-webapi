@@ -12,6 +12,7 @@ $env:AMBULANCE_API_ENVIRONMENT="Development"
 $env:AMBULANCE_API_PORT="8080"
 $env:AMBULANCE_API_MONGODB_USERNAME="root"
 $env:AMBULANCE_API_MONGODB_PASSWORD="neUhaDnes"
+$env:DOCKER_HUB_ID="meowiky002"
 
 function mongo {
     docker compose --file ${ProjectRoot}/deployments/docker-compose/compose.yaml $args
@@ -34,6 +35,9 @@ switch ($command) {
     }
     "mongo" {
         mongo up
+    }
+    "docker" {
+        docker build -t "${env:DOCKER_HUB_ID}/ambulance-wl-webapi:local-build" -f ${ProjectRoot}/build/docker/Dockerfile .
     }
     default {
         throw "Unknown command: $command"
